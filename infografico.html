@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+</head>
+<body>
+<title>Dívida externa na margem</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..800&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: folha de infográfico em colunas — cabeçalho, destaque do conceito amplo com a composição em barra,
+   grade de 6 cartões com ícones e minigráficos, e dois painéis analíticos (ranking 12 meses e dívida líquida). */
+:root {
+  --bg: #f3f5f7; --sheet: #ffffff; --ink: #10233a; --ink-2: #4a5a6c; --ink-3: #7b8796;
+  --rule: #dfe4ea; --soft: #eef2f6;
+  --deb: #1f4f86; --inter: #0f7d78; --tit: #b0893b; --amp: #10233a; --liq: #8a3f5c;
+  --up: #0f7d78; --down: #b4473a; --neg: #0f7d78; --pos: #b0893b;
+  --display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0c141d; --sheet: #121c27; --ink: #e8edf3; --ink-2: #aeb9c6; --ink-3: #7f8b99;
+  --rule: #24313f; --soft: #1a2633;
+  --deb: #6a9fd8; --inter: #4fbdb5; --tit: #d9b46a; --amp: #e8edf3; --liq: #d3829f;
+  --up: #4fbdb5; --down: #e58676; --neg: #4fbdb5; --pos: #d9b46a; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0c141d; --sheet: #121c27; --ink: #e8edf3; --ink-2: #aeb9c6; --ink-3: #7f8b99;
+  --rule: #24313f; --soft: #1a2633;
+  --deb: #6a9fd8; --inter: #4fbdb5; --tit: #d9b46a; --amp: #e8edf3; --liq: #d3829f;
+  --up: #4fbdb5; --down: #e58676; --neg: #4fbdb5; --pos: #d9b46a; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 40px; }
+.folha { max-width: 1180px; margin: 0 auto; display: grid; gap: 22px; }
+.num { font-family: var(--display); font-variant-numeric: tabular-nums; font-stretch: 85%; }
+
+/* Cabeçalho */
+.cab { display: grid; grid-template-columns: 1fr auto; gap: 12px 24px; align-items: end; padding-bottom: 18px; border-bottom: 2px solid var(--ink); }
+.olho { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2); font-weight: 600; margin: 0 0 6px; }
+h1 { font-family: var(--display); font-stretch: 78%; font-weight: 800; font-size: clamp(34px, 5.4vw, 60px); line-height: .95; margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+h1 span { color: var(--ink-3); font-weight: 500; }
+.selo { text-align: right; display: grid; gap: 2px; }
+.selo b { font-family: var(--display); font-stretch: 80%; font-size: 30px; font-weight: 700; line-height: 1; }
+.selo small { color: var(--ink-2); font-size: 12.5px; }
+
+/* Destaque */
+.destaque { background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 26px; display: grid; grid-template-columns: minmax(0, 330px) minmax(0, 1fr); gap: 34px; }
+.dest-num { display: grid; gap: 10px; align-content: start; }
+.rotulo { display: flex; gap: 10px; align-items: center; font-weight: 600; font-size: 14px; }
+.rotulo .cod { color: var(--ink-3); font-weight: 500; font-size: 12px; }
+.ico { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; flex: none; color: var(--c); background: color-mix(in srgb, var(--c) 13%, transparent); }
+.ico svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.grande { font-size: clamp(56px, 8vw, 84px); font-weight: 700; line-height: .9; letter-spacing: -.01em; }
+.grande small { font-size: .3em; font-weight: 500; color: var(--ink-2); letter-spacing: 0; margin-left: 6px; }
+.var2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.var { border-top: 1px solid var(--rule); padding-top: 8px; display: grid; gap: 1px; }
+.var .t { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+.var .a { font-size: 22px; font-weight: 700; line-height: 1.1; display: flex; align-items: center; gap: 5px; }
+.var .p { font-size: 13px; color: var(--ink-2); }
+.seta { width: 14px; height: 14px; flex: none; }
+.up { color: var(--up); } .down { color: var(--down); }
+
+.comp { display: grid; gap: 14px; align-content: center; min-width: 0; }
+.comp h2, .painel h2 { font-family: var(--display); font-stretch: 85%; font-size: 19px; font-weight: 700; margin: 0; text-wrap: balance; }
+.comp p.sub, .painel p.sub { margin: -8px 0 0; color: var(--ink-2); font-size: 13px; }
+.chave { position: relative; height: 34px; }
+.chave .br { position: absolute; top: 18px; height: 12px; border: 1.5px solid var(--ink-3); border-bottom: 0; border-radius: 3px 3px 0 0; }
+.chave .tx { position: absolute; top: 0; font-size: 12px; color: var(--ink-2); white-space: nowrap; transform: translateX(-50%); }
+.chave .tx b { color: var(--ink); }
+.barra { display: flex; height: 56px; border-radius: 4px; overflow: hidden; gap: 2px; }
+.barra div { background: var(--c); color: #fff; display: flex; align-items: center; padding-left: 12px; font-family: var(--display); font-stretch: 85%; font-weight: 700; font-size: 20px; min-width: 0; overflow: hidden; white-space: nowrap; }
+:root[data-theme="dark"] .barra div { color: #0c141d; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .barra div { color: #0c141d; } }
+.leg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.leg div { display: grid; gap: 2px; border-left: 3px solid var(--c); padding-left: 10px; min-width: 0; }
+.leg b { font-size: 13px; }
+.leg span { font-size: 12.5px; color: var(--ink-2); }
+
+/* Cartões */
+.secao { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.secao h2 { font-family: var(--display); font-stretch: 85%; font-size: 22px; font-weight: 700; margin: 0; }
+.secao p { margin: 0; color: var(--ink-2); font-size: 13px; }
+.grade { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.cartao { background: var(--sheet); border: 1px solid var(--rule); border-top: 3px solid var(--c); border-radius: 6px; padding: 18px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.cartao .nome { font-weight: 600; font-size: 14px; line-height: 1.25; }
+.cartao .valor { font-size: 44px; font-weight: 700; line-height: 1; }
+.cartao .valor small { font-size: 14px; font-weight: 500; color: var(--ink-2); margin-left: 4px; font-family: var(--body); font-stretch: 100%; }
+.cartao .valor .rot { display: block; font-family: var(--body); font-stretch: 100%; font-size: 12px; color: var(--ink-3); font-weight: 500; margin-top: 4px; }
+.cartao .var .a { font-size: 19px; }
+.spark { width: 100%; height: 60px; display: block; overflow: visible; }
+.spark-leg { display: flex; justify-content: space-between; font-size: 11px; color: var(--ink-3); margin-top: -6px; }
+
+/* Painéis */
+.duo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 14px; }
+.painel { background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 22px; display: grid; gap: 16px; align-content: start; min-width: 0; }
+.rank { display: grid; gap: 12px; }
+.rank .l { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 12px; align-items: center; }
+.rank .l > span { font-size: 13px; font-weight: 600; line-height: 1.2; }
+.rank .tr { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.rank .b { height: 18px; background: var(--c); border-radius: 0 3px 3px 0; }
+.rank .v { font-size: 15px; font-weight: 700; white-space: nowrap; }
+.rank .v small { font-family: var(--body); font-stretch: 100%; font-weight: 400; color: var(--ink-2); font-size: 12px; margin-left: 4px; }
+.liq svg { width: 100%; height: auto; display: block; }
+.liq text { font-family: var(--body); font-size: 11px; fill: var(--ink-3); }
+.liq .marco { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.rank + h3 { margin-top: 6px; }
+.painel h3 { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; margin: 0; }
+.liq .marco div { display: grid; gap: 1px; }
+.liq .marco b { font-size: 24px; font-weight: 700; line-height: 1.1; }
+.liq .marco span { font-size: 12px; color: var(--ink-2); }
+
+.notas { border-top: 1px solid var(--rule); padding-top: 14px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; font-size: 12px; color: var(--ink-2); }
+.notas b { color: var(--ink); display: block; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 3px; }
+.notas p { margin: 0; }
+
+@media (max-width: 920px) {
+  .destaque, .duo { grid-template-columns: minmax(0, 1fr); }
+  .grade { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .notas { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 600px) {
+  .cab { grid-template-columns: minmax(0, 1fr); }
+  .selo { text-align: left; }
+  .grade, .leg { grid-template-columns: minmax(0, 1fr); }
+  .destaque { padding: 18px; }
+  .barra div { font-size: 15px; padding-left: 6px; }
+  .chave .tx { font-size: 11px; }
+  .rank .l { grid-template-columns: 110px minmax(0, 1fr); }
+}
+</style>
+
+<main class="folha" id="app" aria-live="polite"></main>
+
+<script>
+const INFO = {"ref": "2026-T2", "ref_label": "2º trimestre de 2026", "ref_ano": "2025-T4", "ref_12m": "2025-T2", "gerado": "22/10/2026", "series": [{"codigo": "3684", "curto": "DEB", "nome": "Dívida externa bruta (DEB)", "cor": "deb", "v": 407.1, "ano_abs": 20.95, "ano_pct": 5.43, "a12_abs": 43.94, "a12_pct": 12.1, "hist": [["2016-T2", 336.41], ["2016-T3", 338.32], ["2016-T4", 326.3], ["2017-T1", 319.22], ["2017-T2", 314.86], ["2017-T3", 315.38], ["2017-T4", 314.72], ["2018-T1", 319.55], ["2018-T2", 321.33], ["2018-T3", 307.4], ["2018-T4", 320.61], ["2019-T1", 326.38], ["2019-T2", 322.89], ["2019-T3", 325.65], ["2019-T4", 322.99], ["2020-T1", 326.09], ["2020-T2", 307.06], ["2020-T3", 308.25], ["2020-T4", 310.81], ["2021-T1", 298.49], ["2021-T2", 302.35], ["2021-T3", 321.28], ["2021-T4", 325.44], ["2022-T1", 329.0], ["2022-T2", 323.23], ["2022-T3", 318.9], ["2022-T4", 319.63], ["2023-T1", 321.34], ["2023-T2", 332.31], ["2023-T3", 330.38], ["2023-T4", 342.15], ["2024-T1", 353.66], ["2024-T2", 359.59], ["2024-T3", 375.39], ["2024-T4", 346.62], ["2025-T1", 362.1], ["2025-T2", 363.16], ["2025-T3", 378.97], ["2025-T4", 386.15], ["2026-T1", 401.19], ["2026-T2", 407.1]]}, {"codigo": "7941", "curto": "Intercompanhia", "nome": "Operações intercompanhia", "cor": "inter", "v": 287.01, "ano_abs": 12.68, "ano_pct": 4.62, "a12_abs": 20.72, "a12_pct": 7.78, "hist": [["2016-T2", 217.55], ["2016-T3", 217.86], ["2016-T4", 222.34], ["2017-T1", 233.26], ["2017-T2", 229.87], ["2017-T3", 234.84], ["2017-T4", 227.84], ["2018-T1", 242.18], ["2018-T2", 236.65], ["2018-T3", 231.17], ["2018-T4", 238.6], ["2019-T1", 238.01], ["2019-T2", 253.69], ["2019-T3", 240.23], ["2019-T4", 250.66], ["2020-T1", 240.72], ["2020-T2", 245.95], ["2020-T3", 244.13], ["2020-T4", 244.1], ["2021-T1", 249.89], ["2021-T2", 250.27], ["2021-T3", 245.72], ["2021-T4", 242.11], ["2022-T1", 246.43], ["2022-T2", 241.81], ["2022-T3", 249.46], ["2022-T4", 256.81], ["2023-T1", 266.29], ["2023-T2", 264.18], ["2023-T3", 269.05], ["2023-T4", 265.02], ["2024-T1", 266.14], ["2024-T2", 260.11], ["2024-T3", 265.31], ["2024-T4", 256.4], ["2025-T1", 263.93], ["2025-T2", 266.28], ["2025-T3", 273.82], ["2025-T4", 274.32], ["2026-T1", 281.57], ["2026-T2", 287.01]]}, {"codigo": "22160", "curto": "Títulos domésticos", "nome": "Títulos de dívida no mercado doméstico", "cor": "tit", "v": 175.41, "ano_abs": 16.34, "ano_pct": 10.27, "a12_abs": 37.94, "a12_pct": 27.6, "hist": [["2016-T2", 140.61], ["2016-T3", 131.35], ["2016-T4", 127.2], ["2017-T1", 126.57], ["2017-T2", 122.25], ["2017-T3", 127.55], ["2017-T4", 121.96], ["2018-T1", 123.04], ["2018-T2", 111.19], ["2018-T3", 104.66], ["2018-T4", 106.56], ["2019-T1", 116.29], ["2019-T2", 120.82], ["2019-T3", 107.01], ["2019-T4", 102.14], ["2020-T1", 73.01], ["2020-T2", 66.41], ["2020-T3", 69.18], ["2020-T4", 84.41], ["2021-T1", 82.36], ["2021-T2", 98.56], ["2021-T3", 95.14], ["2021-T4", 102.74], ["2022-T1", 106.91], ["2022-T2", 96.02], ["2022-T3", 93.7], ["2022-T4", 102.97], ["2023-T1", 109.85], ["2023-T2", 119.75], ["2023-T3", 116.81], ["2023-T4", 124.38], ["2024-T1", 129.0], ["2024-T2", 120.5], ["2024-T3", 125.89], ["2024-T4", 114.92], ["2025-T1", 119.75], ["2025-T2", 137.47], ["2025-T3", 151.43], ["2025-T4", 159.07], ["2026-T1", 172.89], ["2026-T2", 175.41]]}, {"codigo": "21554", "curto": "DEB + intercompanhia", "nome": "DEB + intercompanhia", "cor": "deb", "v": 694.11, "ano_abs": 33.64, "ano_pct": 5.09, "a12_abs": 64.66, "a12_pct": 10.27, "hist": [["2016-T2", 553.97], ["2016-T3", 556.18], ["2016-T4", 548.64], ["2017-T1", 552.47], ["2017-T2", 544.72], ["2017-T3", 550.21], ["2017-T4", 542.56], ["2018-T1", 561.73], ["2018-T2", 557.98], ["2018-T3", 538.57], ["2018-T4", 559.22], ["2019-T1", 564.39], ["2019-T2", 576.58], ["2019-T3", 565.88], ["2019-T4", 573.65], ["2020-T1", 566.81], ["2020-T2", 553.01], ["2020-T3", 552.38], ["2020-T4", 554.9], ["2021-T1", 548.39], ["2021-T2", 552.61], ["2021-T3", 567.0], ["2021-T4", 567.55], ["2022-T1", 575.42], ["2022-T2", 565.04], ["2022-T3", 568.36], ["2022-T4", 576.44], ["2023-T1", 587.63], ["2023-T2", 596.49], ["2023-T3", 599.43], ["2023-T4", 607.17], ["2024-T1", 619.8], ["2024-T2", 619.7], ["2024-T3", 640.7], ["2024-T4", 603.02], ["2025-T1", 626.03], ["2025-T2", 629.44], ["2025-T3", 652.79], ["2025-T4", 660.47], ["2026-T1", 682.76], ["2026-T2", 694.11]]}, {"codigo": "25563", "curto": "Conceito amplo", "nome": "DEB · conceito amplo", "cor": "amp", "v": 869.52, "ano_abs": 49.98, "ano_pct": 6.1, "a12_abs": 102.61, "a12_pct": 13.38, "hist": [["2016-T2", 694.57], ["2016-T3", 687.53], ["2016-T4", 675.84], ["2017-T1", 679.04], ["2017-T2", 666.98], ["2017-T3", 677.77], ["2017-T4", 664.52], ["2018-T1", 684.77], ["2018-T2", 669.17], ["2018-T3", 643.23], ["2018-T4", 665.78], ["2019-T1", 680.68], ["2019-T2", 697.4], ["2019-T3", 672.88], ["2019-T4", 675.79], ["2020-T1", 639.82], ["2020-T2", 619.42], ["2020-T3", 621.56], ["2020-T4", 639.31], ["2021-T1", 630.75], ["2021-T2", 651.17], ["2021-T3", 662.14], ["2021-T4", 670.29], ["2022-T1", 682.33], ["2022-T2", 661.06], ["2022-T3", 662.06], ["2022-T4", 679.41], ["2023-T1", 697.49], ["2023-T2", 716.24], ["2023-T3", 716.24], ["2023-T4", 731.54], ["2024-T1", 748.81], ["2024-T2", 740.2], ["2024-T3", 766.59], ["2024-T4", 717.95], ["2025-T1", 745.78], ["2025-T2", 766.91], ["2025-T3", 804.22], ["2025-T4", 819.55], ["2026-T1", 855.65], ["2026-T2", 869.52]]}, {"codigo": "3685", "curto": "Dívida líquida", "nome": "Dívida externa líquida", "cor": "liq", "v": 5.08, "ano_abs": 13.79, "ano_pct": null, "a12_abs": 19.71, "a12_pct": null, "hist": [["2016-T2", -68.46], ["2016-T3", -58.06], ["2016-T4", -67.41], ["2017-T1", -72.29], ["2017-T2", -78.37], ["2017-T3", -77.06], ["2017-T4", -78.79], ["2018-T1", -75.01], ["2018-T2", -96.59], ["2018-T3", -88.22], ["2018-T4", -67.37], ["2019-T1", -74.82], ["2019-T2", -82.41], ["2019-T3", -68.43], ["2019-T4", -49.51], ["2020-T1", -35.89], ["2020-T2", -60.48], ["2020-T3", -65.15], ["2020-T4", -61.55], ["2021-T1", -65.39], ["2021-T2", -70.94], ["2021-T3", -66.96], ["2021-T4", -50.97], ["2022-T1", -41.96], ["2022-T2", -38.49], ["2022-T3", -27.09], ["2022-T4", -27.48], ["2023-T1", -39.99], ["2023-T2", -36.52], ["2023-T3", -32.19], ["2023-T4", -34.81], ["2024-T1", -29.88], ["2024-T2", -28.86], ["2024-T3", -27.01], ["2024-T4", -13.51], ["2025-T1", -2.86], ["2025-T2", -14.62], ["2025-T3", -18.94], ["2025-T4", -8.7], ["2026-T1", -1.1], ["2026-T2", 5.08]]}], "liq_hist": [["2021-T3", -66.96], ["2021-T4", -50.97], ["2022-T1", -41.96], ["2022-T2", -38.49], ["2022-T3", -27.09], ["2022-T4", -27.48], ["2023-T1", -39.99], ["2023-T2", -36.52], ["2023-T3", -32.19], ["2023-T4", -34.81], ["2024-T1", -29.88], ["2024-T2", -28.86], ["2024-T3", -27.01], ["2024-T4", -13.51], ["2025-T1", -2.86], ["2025-T2", -14.62], ["2025-T3", -18.94], ["2025-T4", -8.7], ["2026-T1", -1.1], ["2026-T2", 5.08]], "liq_ultimo_positivo": "2007-T3", "liq_ref_ano": -8.7, "liq_ref_12m": -14.62};
+
+const ICONES = {
+  // dívida externa bruta: instituição/banco
+  "3684": '<path d="M3 10h18M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18M12 3l9 5H3z"/>',
+  // intercompanhia: matriz e filial ligadas
+  "7941": '<path d="M3 21V9l5-3v15M8 21h13V12l-6-3v12M11 13h1M11 17h1M17 13h1M17 17h1"/><path d="M5 3.5c3-2 8-2 11 1m0 0-.3-2.4m.3 2.4-2.4.3"/>',
+  // DEB + intercompanhia: camadas
+  "21554": '<path d="M12 3 2.5 8 12 13l9.5-5z"/><path d="m2.5 12.5 9.5 5 9.5-5"/>',
+  // títulos domésticos: certificado
+  "22160": '<path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 11h7M9 14.5h7"/><circle cx="11" cy="18.5" r="1.4"/>',
+  // conceito amplo: globo
+  "25563": '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.8 5.6 3.8 9s-1.2 6.4-3.8 9c-2.6-2.6-3.8-5.6-3.8-9S9.4 5.6 12 3z"/>',
+  // dívida líquida: balança
+  "3685": '<path d="M12 4v16M7 20h10M5 7h14M12 4.5l0 0"/><path d="M5 7 2.5 13a2.5 2.5 0 0 0 5 0zM19 7l-2.5 6a2.5 2.5 0 0 0 5 0z"/>',
+};
+const SETA_UP = '<svg class="seta" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2 12.5 9h-11z" fill="currentColor"/></svg>';
+const SETA_DN = '<svg class="seta" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 12 1.5 5h11z" fill="currentColor"/></svg>';
+
+const fmt = (n, d = 1) => n.toLocaleString("pt-BR", { minimumFractionDigits: d, maximumFractionDigits: d });
+const sg = (n, d = 1) => (n > 0 ? "+" : n < 0 ? "−" : "") + fmt(Math.abs(n), d);
+const ico = (s) => `<span class="ico" style="--c:var(--${s.cor})"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONES[s.codigo]}</svg></span>`;
+const S = Object.fromEntries(INFO.series.map((s) => [s.codigo, s]));
+
+function variacao(titulo, abs, pct, ref) {
+  const cls = abs >= 0 ? "up" : "down";
+  const p = pct == null ? "% n.a. (base negativa)" : `${sg(pct)}% · vs. ${ref}`;
+  return `<div class="var"><span class="t">${titulo}</span>
+    <span class="a num ${cls}">${abs >= 0 ? SETA_UP : SETA_DN}${sg(abs)}<small style="font-size:12px;font-weight:500;color:var(--ink-2);font-family:var(--body);font-stretch:100%">US$ bi</small></span>
+    <span class="p">${p}</span></div>`;
+}
+
+function spark(s) {
+  const h = s.hist, W = 300, H = 60, pad = 4;
+  const vals = h.map((p) => p[1]);
+  let lo = Math.min(...vals), hi = Math.max(...vals);
+  if (s.codigo === "3685") { lo = Math.min(lo, 0); hi = Math.max(hi, 0); }
+  const m = (hi - lo) * 0.08; lo -= m; hi += m;
+  const x = (i) => pad + (i * (W - 2 * pad)) / (h.length - 1);
+  const y = (v) => H - pad - ((v - lo) * (H - 2 * pad)) / (hi - lo);
+  const pts = h.map((p, i) => `${x(i).toFixed(1)},${y(p[1]).toFixed(1)}`);
+  const base = s.codigo === "3685" ? y(0) : H;
+  const id = "g" + s.codigo;
+  const zero = s.codigo === "3685" ? `<line x1="0" x2="${W}" y1="${y(0)}" y2="${y(0)}" stroke="var(--ink-3)" stroke-dasharray="3 3" stroke-width="1"/>` : "";
+  const ux = x(h.length - 1), uy = y(vals[vals.length - 1]);
+  return `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Evolução em 10 anos">
+    <defs><linearGradient id="${id}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--${s.cor})" stop-opacity=".22"/><stop offset="1" stop-color="var(--${s.cor})" stop-opacity="0"/></linearGradient></defs>
+    <path d="M${x(0)},${base} L${pts.join(" L")} L${ux},${base} Z" fill="url(#${id})"/>
+    ${zero}
+    <polyline points="${pts.join(" ")}" fill="none" stroke="var(--${s.cor})" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>
+    <circle cx="${ux}" cy="${uy}" r="3.5" fill="var(--${s.cor})" stroke="var(--sheet)" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+  </svg>
+  <div class="spark-leg"><span>${h[0][0]}</span><span>10 anos</span><span>${h[h.length - 1][0]}</span></div>`;
+}
+
+function cartao(s) {
+  const liq = s.codigo === "3685";
+  const rot = liq ? (s.v > 0 ? "Devedor líquido" : "Credor líquido")
+    : s.codigo === "25563" ? "DEB + intercompanhia + títulos domésticos"
+    : `${fmt(s.v / S["25563"].v * 100)}% do conceito amplo`;
+  return `<article class="cartao" style="--c:var(--${s.cor})">
+    <div class="rotulo">${ico(s)}<div><div class="nome">${s.nome}</div><div class="cod">SGS ${s.codigo}</div></div></div>
+    <div class="valor num">${sg(s.v).replace("+", liq ? "+" : "")}<small>US$ bi</small><span class="rot">${rot}</span></div>
+    <div class="var2">${variacao("No ano", s.ano_abs, s.ano_pct, INFO.ref_ano)}${variacao("Em 12 meses", s.a12_abs, s.a12_pct, INFO.ref_12m)}</div>
+    <div>${spark(s)}</div>
+  </article>`;
+}
+
+function destaque() {
+  const a = S["25563"], deb = S["3684"], it = S["7941"], tit = S["22160"], d2 = S["21554"];
+  const tot = deb.v + it.v + tit.v;
+  const w = (v) => (v / tot) * 100;
+  const pos2 = w(deb.v) + w(it.v);
+  const seg = (s) => `<div style="--c:var(--${s.cor});flex:${s.v}" title="${s.nome}">${fmt(s.v)}</div>`;
+  const lg = (s) => `<div style="--c:var(--${s.cor})"><b>${s.curto}</b><span>${fmt(s.v)} bi · ${fmt(s.v / a.v * 100)}% do total</span><span>12 meses: ${sg(s.a12_abs)} bi (${sg(s.a12_pct)}%)</span></div>`;
+  return `<section class="destaque">
+    <div class="dest-num">
+      <div class="rotulo">${ico(a)}<div><div class="nome">Dívida externa bruta · conceito amplo</div><div class="cod">SGS 25563 · inclui intercompanhia e títulos no mercado doméstico</div></div></div>
+      <div class="grande num">${fmt(a.v)}<small>US$ bi</small></div>
+      <div class="var2">${variacao("No ano", a.ano_abs, a.ano_pct, INFO.ref_ano)}${variacao("Em 12 meses", a.a12_abs, a.a12_pct, INFO.ref_12m)}</div>
+    </div>
+    <div class="comp">
+      <h2>Composição do estoque em ${INFO.ref_label}</h2>
+      <p class="sub">Conceito amplo = DEB + operações intercompanhia + títulos negociados no mercado doméstico</p>
+      <div class="chave" aria-hidden="true">
+        <div class="br" style="left:0;width:calc(${pos2}% - 1px)"></div>
+        <div class="tx" style="left:${pos2 / 2}%">DEB + intercompanhia (SGS 21554): <b class="num">${fmt(d2.v)}</b></div>
+      </div>
+      <div class="barra" role="img" aria-label="DEB ${fmt(deb.v)}, intercompanhia ${fmt(it.v)}, títulos domésticos ${fmt(tit.v)} bilhões de dólares">${seg(deb)}${seg(it)}${seg(tit)}</div>
+      <div class="leg">${lg(deb)}${lg(it)}${lg(tit)}</div>
+    </div>
+  </section>`;
+}
+
+function ranking() {
+  const bloco = (kp, ka) => {
+    const lista = INFO.series.filter((s) => s[kp] != null).sort((a, b) => b[kp] - a[kp]);
+    const mx = Math.max(...INFO.series.filter((s) => s.a12_pct != null).map((s) => Math.abs(s.a12_pct)));
+    return `<div class="rank">${lista.map((s) => `<div class="l" style="--c:var(--${s.cor})"><span>${s.curto}</span>
+      <div class="tr"><div class="b" style="width:${(Math.abs(s[kp]) / mx) * 68}%"></div><span class="v num">${sg(s[kp])}%<small>${sg(s[ka])} bi</small></span></div></div>`).join("")}</div>`;
+  };
+  return `<section class="painel">
+    <h2>Quem mais cresceu</h2>
+    <p class="sub">Variação % com o acréscimo em US$ bi; barras na mesma escala</p>
+    <h3>Em 12 meses · ${INFO.ref_12m} a ${INFO.ref}</h3>${bloco("a12_pct", "a12_abs")}
+    <h3>No ano · ${INFO.ref_ano} a ${INFO.ref}</h3>${bloco("ano_pct", "ano_abs")}
+  </section>`;
+}
+
+function liquida() {
+  const s = S["3685"], h = INFO.liq_hist;
+  const W = 620, H = 230, L = 40, R = 12, T = 18, B = 28;
+  const vals = h.map((p) => p[1]);
+  const lo = Math.floor(Math.min(...vals, 0) / 20) * 20, hi = Math.ceil(Math.max(...vals, 0) / 20) * 20 || 20;
+  const y = (v) => T + ((hi - v) * (H - T - B)) / (hi - lo);
+  const bw = (W - L - R) / h.length;
+  let g = "";
+  for (let v = lo; v <= hi; v += 20) g += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--rule)" stroke-width="${v === 0 ? 0 : 1}"/><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end">${v}</text>`;
+  const bars = h.map((p, i) => {
+    const x = L + i * bw + bw * 0.18, v = p[1], top = y(Math.max(v, 0)), hh = Math.abs(y(v) - y(0));
+    const lbl = p[0].endsWith("T2") ? `<text x="${x + bw * 0.32}" y="${H - 8}" text-anchor="middle">${p[0].slice(0, 4)}</text>` : "";
+    return `<rect x="${x.toFixed(1)}" y="${top.toFixed(1)}" width="${(bw * 0.64).toFixed(1)}" height="${Math.max(hh, 1).toFixed(1)}" rx="1.5" fill="var(--${v > 0 ? "pos" : "neg"})" opacity="${i === h.length - 1 ? 1 : 0.75}"/>${lbl}`;
+  }).join("");
+  const ux = L + (h.length - 1) * bw + bw / 2;
+  const nota = `<text x="${ux - 8}" y="${y(s.v) - 8}" text-anchor="end" style="fill:var(--ink);font-weight:600">${INFO.ref}: +${fmt(s.v)}</text>`;
+  return `<section class="painel liq" style="--c:var(--liq)">
+    <h2>Dívida externa líquida: o Brasil voltou a ser devedor líquido</h2>
+    <p class="sub">SGS 3685, US$ bi. Negativo = credor líquido (ativos externos superam a dívida); positivo = devedor líquido.</p>
+    <div class="marco">
+      <div><b class="num" style="color:var(--pos)">+${fmt(s.v)}</b><span>em ${INFO.ref}, 1º saldo devedor desde ${INFO.liq_ultimo_positivo}</span></div>
+      <div><b class="num">${sg(s.ano_abs)}</b><span>no ano, vs. ${INFO.ref_ano} (${sg(INFO.liq_ref_ano)})</span></div>
+      <div><b class="num">${sg(s.a12_abs)}</b><span>em 12 meses, vs. ${INFO.ref_12m} (${sg(INFO.liq_ref_12m)})</span></div>
+    </div>
+    <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Dívida externa líquida trimestral, últimos ${h.length} trimestres">
+      ${g}<line x1="${L}" x2="${W - R}" y1="${y(0)}" y2="${y(0)}" stroke="var(--ink-2)" stroke-width="1.2"/>${bars}${nota}
+    </svg>
+  </section>`;
+}
+
+document.getElementById("app").innerHTML = `
+  <header class="cab">
+    <div><p class="olho">Infográfico · Setor externo · Banco Central do Brasil</p>
+      <h1>Dívida externa do Brasil <span>na margem</span></h1></div>
+    <div class="selo"><b>${INFO.ref_label}</b><small>Estoques de fim de período, US$ bilhões</small></div>
+  </header>
+  ${destaque()}
+  <div class="secao"><h2>As seis séries em ${INFO.ref}</h2><p>No ano: vs. ${INFO.ref_ano} (dezembro). Em 12 meses: vs. ${INFO.ref_12m}.</p></div>
+  <div class="grade">${["3684", "7941", "22160", "21554", "25563", "3685"].map((c) => cartao(S[c])).join("")}</div>
+  <div class="duo">${ranking()}${liquida()}</div>
+  <footer class="notas">
+    <div><b>Fonte</b><p>Banco Central do Brasil, Sistema Gerenciador de Séries Temporais (SGS): séries 3684, 7941, 21554, 22160, 25563 e 3685. Dados até ${INFO.ref}, gerados em ${INFO.gerado}.</p></div>
+    <div><b>Como ler as variações</b><p>São estoques trimestrais. "No ano" compara com o fim do ano anterior (${INFO.ref_ano}); "em 12 meses" compara com o mesmo trimestre do ano anterior (${INFO.ref_12m}).</p></div>
+    <div><b>Dívida líquida</b><p>Como a base de comparação da série 3685 é negativa, a variação é mostrada só em US$ bi; a variação % não tem leitura econômica.</p></div>
+  </footer>`;
+</script>
+
+</body>
+</html>

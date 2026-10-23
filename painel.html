@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel da dívida externa</title>
+<style>
+:root { --color-fg:#1d232b; --color-fg-muted:#5d6672; --color-bg:#ffffff; --color-panel:#f7f8fa;
+  --color-border-line:#dde1e6; --color-ok:#2d7d4f; --color-bad:#b23a3a;
+  --font-anthropic-sans: system-ui, "Segoe UI", Roboto, sans-serif; --font-anthropic-serif: Georgia, "Times New Roman", serif;
+  --cds-font-size-caption:12px; --cds-font-size-body:14px; --cds-font-size-heading:16px; --cds-font-size-title:28px;
+  --cds-font-weight-medium:600; --cds-gap-xs:4px; --cds-gap-sm:8px; --cds-gap-md:12px; --cds-gap-lg:20px;
+  --cds-pad-xs:4px; --cds-pad-sm:8px; --cds-pad-md:12px; --cds-pad-lg:16px; --cds-radius:8px;
+  --cds-chart-grid:#e6e9ed; --cds-chart-axis:#9aa3ad; --cds-chart-reference:#8a939d;
+  --cds-surface-popover:#ffffff; --cds-border:#d5dae0; --cds-shadow-popover:0 4px 14px rgba(0,0,0,.12);
+  --cds-text-secondary:#5d6672; --cds-dur-slow:.3s; }
+@media (prefers-color-scheme: dark) { :root { --color-fg:#e6e9ed; --color-fg-muted:#9aa3ad; --color-bg:#14181d;
+  --color-panel:#1c2128; --color-border-line:#2e353e; --color-ok:#6cc596; --color-bad:#f08080;
+  --cds-chart-grid:#2a3038; --cds-chart-axis:#5d6672; --cds-chart-reference:#6f7882;
+  --cds-surface-popover:#232931; --cds-border:#3a424c; --cds-text-secondary:#9aa3ad; color-scheme: dark; } }
+body { margin:0; background:var(--color-bg); color:var(--color-fg); padding:24px 16px; }
+</style>
+<script>
+window.dash = (() => {
+  const D = {"serie": [{"data": "1972-10-01", "trimestre": "1972-T4", "sgs_3684": 11.4639, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1973-10-01", "trimestre": "1973-T4", "sgs_3684": 14.8572, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1974-10-01", "trimestre": "1974-T4", "sgs_3684": 20.0324, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1975-10-01", "trimestre": "1975-T4", "sgs_3684": 25.1156, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1976-10-01", "trimestre": "1976-T4", "sgs_3684": 32.1451, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1977-10-01", "trimestre": "1977-T4", "sgs_3684": 37.9507, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1978-10-01", "trimestre": "1978-T4", "sgs_3684": 52.1864, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1979-10-01", "trimestre": "1979-T4", "sgs_3684": 55.8029, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1980-10-01", "trimestre": "1980-T4", "sgs_3684": 64.2595, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1981-01-01", "trimestre": "1981-T1", "sgs_3684": 65.7433, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1981-04-01", "trimestre": "1981-T2", "sgs_3684": 67.0036, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1981-07-01", "trimestre": "1981-T3", "sgs_3684": 69.739, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1981-10-01", "trimestre": "1981-T4", "sgs_3684": 73.9628, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1982-01-01", "trimestre": "1982-T1", "sgs_3684": 75.7317, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1982-04-01", "trimestre": "1982-T2", "sgs_3684": 77.341, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1982-07-01", "trimestre": "1982-T3", "sgs_3684": 79.7845, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1982-10-01", "trimestre": "1982-T4", "sgs_3684": 85.4875, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1983-01-01", "trimestre": "1983-T1", "sgs_3684": 88.7351, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1983-04-01", "trimestre": "1983-T2", "sgs_3684": 89.9156, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1983-07-01", "trimestre": "1983-T3", "sgs_3684": 91.2416, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1983-10-01", "trimestre": "1983-T4", "sgs_3684": 93.7452, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1984-01-01", "trimestre": "1984-T1", "sgs_3684": 96.4548, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1984-04-01", "trimestre": "1984-T2", "sgs_3684": 99.1521, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1984-07-01", "trimestre": "1984-T3", "sgs_3684": 100.2817, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1984-10-01", "trimestre": "1984-T4", "sgs_3684": 102.127, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1985-01-01", "trimestre": "1985-T1", "sgs_3684": 101.4436, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1985-04-01", "trimestre": "1985-T2", "sgs_3684": 101.3119, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1985-07-01", "trimestre": "1985-T3", "sgs_3684": 103.2826, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1985-10-01", "trimestre": "1985-T4", "sgs_3684": 105.1706, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1986-01-01", "trimestre": "1986-T1", "sgs_3684": 107.9421, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1986-04-01", "trimestre": "1986-T2", "sgs_3684": 109.3543, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1986-07-01", "trimestre": "1986-T3", "sgs_3684": 110.7826, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1986-10-01", "trimestre": "1986-T4", "sgs_3684": 111.2027, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1987-01-01", "trimestre": "1987-T1", "sgs_3684": 114.5164, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": null}, {"data": "1987-04-01", "trimestre": "1987-T2", "sgs_3684": 115.4924, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 101.952}, {"data": "1987-07-01", "trimestre": "1987-T3", "sgs_3684": 117.039, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 101.3235}, {"data": "1987-10-01", "trimestre": "1987-T4", "sgs_3684": 121.1882, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 106.3461}, {"data": "1988-01-01", "trimestre": "1988-T1", "sgs_3684": 119.3138, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 104.0512}, {"data": "1988-04-01", "trimestre": "1988-T2", "sgs_3684": 115.9687, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 101.132}, {"data": "1988-07-01", "trimestre": "1988-T3", "sgs_3684": 114.1574, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 96.2462}, {"data": "1988-10-01", "trimestre": "1988-T4", "sgs_3684": 113.511, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 96.0693}, {"data": "1989-10-01", "trimestre": "1989-T4", "sgs_3684": 115.5059, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 96.9778}, {"data": "1990-01-01", "trimestre": "1990-T1", "sgs_3684": 117.5959, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 100.6565}, {"data": "1990-04-01", "trimestre": "1990-T2", "sgs_3684": 118.3049, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 98.9381}, {"data": "1990-07-01", "trimestre": "1990-T3", "sgs_3684": 121.1321, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 102.4508}, {"data": "1990-10-01", "trimestre": "1990-T4", "sgs_3684": 123.4385, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 104.889}, {"data": "1991-01-01", "trimestre": "1991-T1", "sgs_3684": 120.5201, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 102.2878}, {"data": "1991-04-01", "trimestre": "1991-T2", "sgs_3684": 118.3741, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 99.3024}, {"data": "1991-07-01", "trimestre": "1991-T3", "sgs_3684": 120.0981, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 103.2626}, {"data": "1991-10-01", "trimestre": "1991-T4", "sgs_3684": 123.9104, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 107.8698}, {"data": "1992-01-01", "trimestre": "1992-T1", "sgs_3684": 132.2596, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 104.2637}, {"data": "1992-10-01", "trimestre": "1992-T4", "sgs_3684": 135.9488, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 99.6261}, {"data": "1993-10-01", "trimestre": "1993-T4", "sgs_3684": 145.7259, "sgs_7941": 7.565, "sgs_21554": 153.2909, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 98.6452}, {"data": "1994-04-01", "trimestre": "1994-T2", "sgs_3684": 150.2957, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 90.0974}, {"data": "1994-10-01", "trimestre": "1994-T4", "sgs_3684": 148.2952, "sgs_7941": 5.277, "sgs_21554": 153.5722, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 88.2035}, {"data": "1995-04-01", "trimestre": "1995-T2", "sgs_3684": 157.1429, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 104.7174}, {"data": "1995-10-01", "trimestre": "1995-T4", "sgs_3684": 159.2562, "sgs_7941": 6.191, "sgs_21554": 165.4472, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 92.3476}, {"data": "1996-04-01", "trimestre": "1996-T2", "sgs_3684": 168.5137, "sgs_7941": null, "sgs_21554": null, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 91.2572}, {"data": "1996-10-01", "trimestre": "1996-T4", "sgs_3684": 179.9344, "sgs_7941": 6.627, "sgs_21554": 186.5614, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 100.5622}, {"data": "1997-10-01", "trimestre": "1997-T4", "sgs_3684": 199.9973, "sgs_7941": 8.377, "sgs_21554": 208.3743, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 130.8545}, {"data": "1998-10-01", "trimestre": "1998-T4", "sgs_3684": 241.6436, "sgs_7941": 17.8522, "sgs_21554": 259.4958, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 182.267}, {"data": "1999-10-01", "trimestre": "1999-T4", "sgs_3684": 241.4688, "sgs_7941": 15.8586, "sgs_21554": 257.3274, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 190.3187}, {"data": "2000-01-01", "trimestre": "2000-T1", "sgs_3684": 242.5367, "sgs_7941": 16.7009, "sgs_21554": 259.2376, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 190.1794}, {"data": "2000-04-01", "trimestre": "2000-T2", "sgs_3684": 232.2881, "sgs_7941": 17.5625, "sgs_21554": 249.8506, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 190.4755}, {"data": "2000-07-01", "trimestre": "2000-T3", "sgs_3684": 232.3882, "sgs_7941": 18.4055, "sgs_21554": 250.7936, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 188.5808}, {"data": "2000-10-01", "trimestre": "2000-T4", "sgs_3684": 236.1566, "sgs_7941": 19.2358, "sgs_21554": 255.3924, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 190.317}, {"data": "2001-01-01", "trimestre": "2001-T1", "sgs_3684": 204.095, "sgs_7941": 16.468, "sgs_21554": 220.563, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 157.526}, {"data": "2001-04-01", "trimestre": "2001-T2", "sgs_3684": 207.7414, "sgs_7941": 16.2733, "sgs_21554": 224.0147, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 158.3246}, {"data": "2001-07-01", "trimestre": "2001-T3", "sgs_3684": 216.5239, "sgs_7941": 15.9009, "sgs_21554": 232.4248, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 163.1529}, {"data": "2001-10-01", "trimestre": "2001-T4", "sgs_3684": 209.9343, "sgs_7941": 16.133, "sgs_21554": 226.0673, "sgs_22160": null, "sgs_25563": null, "sgs_3685": 162.7041}, {"data": "2002-01-01", "trimestre": "2002-T1", "sgs_3684": 210.7768, "sgs_7941": 16.1849, "sgs_21554": 226.9617, "sgs_22160": 1.528, "sgs_25563": 228.49, "sgs_3685": 163.3979}, {"data": "2002-04-01", "trimestre": "2002-T2", "sgs_3684": 219.0382, "sgs_7941": 16.7772, "sgs_21554": 235.8154, "sgs_22160": 1.289, "sgs_25563": 237.104, "sgs_3685": 166.7317}, {"data": "2002-07-01", "trimestre": "2002-T3", "sgs_3684": 212.8728, "sgs_7941": 16.3555, "sgs_21554": 229.2284, "sgs_22160": 1.745, "sgs_25563": 230.973, "sgs_3685": 165.3379}, {"data": "2002-10-01", "trimestre": "2002-T4", "sgs_3684": 210.7113, "sgs_7941": 16.9781, "sgs_21554": 227.6894, "sgs_22160": 2.378, "sgs_25563": 230.068, "sgs_3685": 164.9991}, {"data": "2003-01-01", "trimestre": "2003-T1", "sgs_3684": 215.2938, "sgs_7941": 18.3983, "sgs_21554": 233.6921, "sgs_22160": 2.212, "sgs_25563": 235.904, "sgs_3685": 165.225}, {"data": "2003-04-01", "trimestre": "2003-T2", "sgs_3684": 218.8534, "sgs_7941": 18.3794, "sgs_21554": 237.2328, "sgs_22160": 2.368, "sgs_25563": 239.601, "sgs_3685": 163.0841}, {"data": "2003-07-01", "trimestre": "2003-T3", "sgs_3684": 219.7238, "sgs_7941": 18.7683, "sgs_21554": 238.4921, "sgs_22160": 2.256, "sgs_25563": 240.748, "sgs_3685": 158.3781}, {"data": "2003-10-01", "trimestre": "2003-T4", "sgs_3684": 214.9296, "sgs_7941": 20.4845, "sgs_21554": 235.4141, "sgs_22160": 2.529, "sgs_25563": 237.943, "sgs_3685": 150.9926}, {"data": "2004-01-01", "trimestre": "2004-T1", "sgs_3684": 213.4626, "sgs_7941": 20.1668, "sgs_21554": 233.6294, "sgs_22160": 2.809, "sgs_25563": 236.438, "sgs_3685": 147.5267}, {"data": "2004-04-01", "trimestre": "2004-T2", "sgs_3684": 205.5576, "sgs_7941": 18.6516, "sgs_21554": 224.2092, "sgs_22160": 2.034, "sgs_25563": 226.243, "sgs_3685": 145.4191}, {"data": "2004-07-01", "trimestre": "2004-T3", "sgs_3684": 202.1872, "sgs_7941": 18.13, "sgs_21554": 220.3172, "sgs_22160": 2.305, "sgs_25563": 222.622, "sgs_3685": 141.0852}, {"data": "2004-10-01", "trimestre": "2004-T4", "sgs_3684": 201.3741, "sgs_7941": 18.808, "sgs_21554": 220.1821, "sgs_22160": 2.555, "sgs_25563": 222.737, "sgs_3685": 135.7022}, {"data": "2005-01-01", "trimestre": "2005-T1", "sgs_3684": 201.9219, "sgs_7941": 19.687, "sgs_21554": 221.6089, "sgs_22160": 3.179, "sgs_25563": 224.788, "sgs_3685": 127.7883}, {"data": "2005-04-01", "trimestre": "2005-T2", "sgs_3684": 191.4014, "sgs_7941": 20.0813, "sgs_21554": 211.4827, "sgs_22160": 4.506, "sgs_25563": 215.989, "sgs_3685": 121.2226}, {"data": "2005-07-01", "trimestre": "2005-T3", "sgs_3684": 183.2544, "sgs_7941": 18.8474, "sgs_21554": 202.1018, "sgs_22160": 5.674, "sgs_25563": 207.776, "sgs_3685": 109.9794}, {"data": "2005-10-01", "trimestre": "2005-T4", "sgs_3684": 169.5616, "sgs_7941": 18.5371, "sgs_21554": 188.0986, "sgs_22160": 4.596, "sgs_25563": 192.694, "sgs_3685": 101.0823}, {"data": "2006-01-01", "trimestre": "2006-T1", "sgs_3684": 166.7533, "sgs_7941": 20.216, "sgs_21554": 186.9693, "sgs_22160": 14.085, "sgs_25563": 201.054, "sgs_3685": 88.3392}, {"data": "2006-04-01", "trimestre": "2006-T2", "sgs_3684": 156.7316, "sgs_7941": 20.9983, "sgs_21554": 177.7299, "sgs_22160": 14.586, "sgs_25563": 192.316, "sgs_3685": 79.408}, {"data": "2006-07-01", "trimestre": "2006-T3", "sgs_3684": 159.641, "sgs_7941": 22.7746, "sgs_21554": 182.4156, "sgs_22160": 13.237, "sgs_25563": 195.653, "sgs_3685": 70.83}, {"data": "2006-10-01", "trimestre": "2006-T4", "sgs_3684": 172.6721, "sgs_7941": 26.7833, "sgs_21554": 199.4554, "sgs_22160": 18.163, "sgs_25563": 217.618, "sgs_3685": 74.8214}, {"data": "2007-01-01", "trimestre": "2007-T1", "sgs_3684": 182.204, "sgs_7941": 33.4616, "sgs_21554": 215.6656, "sgs_22160": 22.69, "sgs_25563": 238.355, "sgs_3685": 60.0289}, {"data": "2007-04-01", "trimestre": "2007-T2", "sgs_3684": 191.433, "sgs_7941": 38.9379, "sgs_21554": 230.371, "sgs_22160": 34.929, "sgs_25563": 265.3, "sgs_3685": 28.8565}, {"data": "2007-07-01", "trimestre": "2007-T3", "sgs_3684": 195.4191, "sgs_7941": 42.3007, "sgs_21554": 237.7198, "sgs_22160": 19.155, "sgs_25563": 256.874, "sgs_3685": 16.9525}, {"data": "2007-10-01", "trimestre": "2007-T4", "sgs_3684": 193.3452, "sgs_7941": 47.2765, "sgs_21554": 240.6217, "sgs_22160": 21.05, "sgs_25563": 261.672, "sgs_3685": -11.9476}, {"data": "2008-01-01", "trimestre": "2008-T1", "sgs_3684": 201.7603, "sgs_7941": 51.8466, "sgs_21554": 253.6068, "sgs_22160": 30.183, "sgs_25563": 283.79, "sgs_3685": -16.4749}, {"data": "2008-04-01", "trimestre": "2008-T2", "sgs_3684": 205.6109, "sgs_7941": 56.8927, "sgs_21554": 262.5036, "sgs_22160": 34.815, "sgs_25563": 297.318, "sgs_3685": -19.2091}, {"data": "2008-07-01", "trimestre": "2008-T3", "sgs_3684": 211.4602, "sgs_7941": 61.5852, "sgs_21554": 273.0454, "sgs_22160": 36.261, "sgs_25563": 309.306, "sgs_3685": -20.6019}, {"data": "2008-10-01", "trimestre": "2008-T4", "sgs_3684": 198.5192, "sgs_7941": 64.5698, "sgs_21554": 263.0889, "sgs_22160": 26.484, "sgs_25563": 289.573, "sgs_3685": -27.6831}, {"data": "2009-01-01", "trimestre": "2009-T1", "sgs_3684": 192.7982, "sgs_7941": 67.2506, "sgs_21554": 260.0487, "sgs_22160": 25.021, "sgs_25563": 285.07, "sgs_3685": -26.3075}, {"data": "2009-04-01", "trimestre": "2009-T2", "sgs_3684": 199.0775, "sgs_7941": 71.1106, "sgs_21554": 270.1881, "sgs_22160": 34.849, "sgs_25563": 305.037, "sgs_3685": -27.9747}, {"data": "2009-07-01", "trimestre": "2009-T3", "sgs_3684": 205.0168, "sgs_7941": 77.1725, "sgs_21554": 282.1893, "sgs_22160": 46.822, "sgs_25563": 329.011, "sgs_3685": -37.7801}, {"data": "2009-10-01", "trimestre": "2009-T4", "sgs_3684": 198.3395, "sgs_7941": 79.3716, "sgs_21554": 277.711, "sgs_22160": 55.896, "sgs_25563": 333.607, "sgs_3685": -61.7712}, {"data": "2010-01-01", "trimestre": "2010-T1", "sgs_3684": 211.6222, "sgs_7941": 81.4735, "sgs_21554": 293.0957, "sgs_22160": 60.742, "sgs_25563": 353.838, "sgs_3685": -49.544}, {"data": "2010-04-01", "trimestre": "2010-T2", "sgs_3684": 228.7036, "sgs_7941": 80.9164, "sgs_21554": 309.62, "sgs_22160": 70.046, "sgs_25563": 379.666, "sgs_3685": -42.2467}, {"data": "2010-07-01", "trimestre": "2010-T3", "sgs_3684": 247.8696, "sgs_7941": 85.3873, "sgs_21554": 333.2569, "sgs_22160": 82.435, "sgs_25563": 415.692, "sgs_3685": -44.915}, {"data": "2010-10-01", "trimestre": "2010-T4", "sgs_3684": 256.91, "sgs_7941": 95.137, "sgs_21554": 352.047, "sgs_22160": 100.733, "sgs_25563": 452.78, "sgs_3685": -50.6278}, {"data": "2011-01-01", "trimestre": "2011-T1", "sgs_3684": 276.0288, "sgs_7941": 102.1442, "sgs_21554": 378.173, "sgs_22160": 103.351, "sgs_25563": 481.524, "sgs_3685": -64.5558}, {"data": "2011-04-01", "trimestre": "2011-T2", "sgs_3684": 291.6993, "sgs_7941": 104.5547, "sgs_21554": 396.2541, "sgs_22160": 113.261, "sgs_25563": 509.515, "sgs_3685": -64.5238}, {"data": "2011-07-01", "trimestre": "2011-T3", "sgs_3684": 298.2649, "sgs_7941": 102.0866, "sgs_21554": 400.3515, "sgs_22160": 97.295, "sgs_25563": 497.646, "sgs_3685": -75.3456}, {"data": "2011-10-01", "trimestre": "2011-T4", "sgs_3684": 309.6476, "sgs_7941": 105.913, "sgs_21554": 415.5606, "sgs_22160": 100.316, "sgs_25563": 515.876, "sgs_3685": -61.4249}, {"data": "2012-01-01", "trimestre": "2012-T1", "sgs_3684": 313.1604, "sgs_7941": 113.1863, "sgs_21554": 426.3467, "sgs_22160": 110.916, "sgs_25563": 537.263, "sgs_3685": -74.2055}, {"data": "2012-04-01", "trimestre": "2012-T2", "sgs_3684": 315.6103, "sgs_7941": 114.7436, "sgs_21554": 430.3539, "sgs_22160": 105.932, "sgs_25563": 536.286, "sgs_3685": -81.4575}, {"data": "2012-07-01", "trimestre": "2012-T3", "sgs_3684": 323.9532, "sgs_7941": 118.8907, "sgs_21554": 442.844, "sgs_22160": 109.705, "sgs_25563": 552.549, "sgs_3685": -76.2161}, {"data": "2012-10-01", "trimestre": "2012-T4", "sgs_3684": 327.6688, "sgs_7941": 127.7052, "sgs_21554": 455.3739, "sgs_22160": 114.763, "sgs_25563": 570.137, "sgs_3685": -74.8901}, {"data": "2013-01-01", "trimestre": "2013-T1", "sgs_3684": 336.3987, "sgs_7941": 141.7576, "sgs_21554": 478.1563, "sgs_22160": 119.944, "sgs_25563": 598.101, "sgs_3685": -60.7487}, {"data": "2013-04-01", "trimestre": "2013-T2", "sgs_3684": 324.9812, "sgs_7941": 158.5568, "sgs_21554": 483.538, "sgs_22160": 118.998, "sgs_25563": 602.536, "sgs_3685": -71.1343}, {"data": "2013-07-01", "trimestre": "2013-T3", "sgs_3684": 314.0528, "sgs_7941": 164.0657, "sgs_21554": 478.1186, "sgs_22160": 140.236, "sgs_25563": 618.355, "sgs_3685": -84.4462}, {"data": "2013-10-01", "trimestre": "2013-T4", "sgs_3684": 312.6495, "sgs_7941": 174.1457, "sgs_21554": 486.7953, "sgs_22160": 134.693, "sgs_25563": 621.488, "sgs_3685": -90.4115}, {"data": "2014-01-01", "trimestre": "2014-T1", "sgs_3684": 324.7934, "sgs_7941": 184.3068, "sgs_21554": 509.1003, "sgs_22160": 155.547, "sgs_25563": 664.648, "sgs_3685": -82.6431}, {"data": "2014-04-01", "trimestre": "2014-T2", "sgs_3684": 339.0943, "sgs_7941": 193.2999, "sgs_21554": 532.3942, "sgs_22160": 169.518, "sgs_25563": 701.913, "sgs_3685": -70.9094}, {"data": "2014-07-01", "trimestre": "2014-T3", "sgs_3684": 342.4785, "sgs_7941": 202.07, "sgs_21554": 544.5486, "sgs_22160": 162.533, "sgs_25563": 707.081, "sgs_3685": -57.0074}, {"data": "2014-10-01", "trimestre": "2014-T4", "sgs_3684": 352.8212, "sgs_7941": 207.756, "sgs_21554": 560.5772, "sgs_22160": 152.102, "sgs_25563": 712.679, "sgs_3685": -45.7466}, {"data": "2015-01-01", "trimestre": "2015-T1", "sgs_3684": 348.7036, "sgs_7941": 206.0272, "sgs_21554": 554.7308, "sgs_22160": 144.694, "sgs_25563": 699.425, "sgs_3685": -44.106}, {"data": "2015-04-01", "trimestre": "2015-T2", "sgs_3684": 349.3208, "sgs_7941": 209.7583, "sgs_21554": 559.0791, "sgs_22160": 155.181, "sgs_25563": 714.26, "sgs_3685": -44.2749}, {"data": "2015-07-01", "trimestre": "2015-T3", "sgs_3684": 345.0128, "sgs_7941": 203.7831, "sgs_21554": 548.7958, "sgs_22160": 118.968, "sgs_25563": 667.764, "sgs_3685": -48.2066}, {"data": "2015-10-01", "trimestre": "2015-T4", "sgs_3684": 334.7451, "sgs_7941": 205.7107, "sgs_21554": 540.4557, "sgs_22160": 123.942, "sgs_25563": 664.398, "sgs_3685": -57.7694}, {"data": "2016-01-01", "trimestre": "2016-T1", "sgs_3684": 334.6076, "sgs_7941": 213.5964, "sgs_21554": 548.204, "sgs_22160": 126.947, "sgs_25563": 675.151, "sgs_3685": -62.5265}, {"data": "2016-04-01", "trimestre": "2016-T2", "sgs_3684": 336.4131, "sgs_7941": 217.5527, "sgs_21554": 553.9658, "sgs_22160": 140.608, "sgs_25563": 694.574, "sgs_3685": -68.4603}, {"data": "2016-07-01", "trimestre": "2016-T3", "sgs_3684": 338.3202, "sgs_7941": 217.8598, "sgs_21554": 556.1799, "sgs_22160": 131.348, "sgs_25563": 687.528, "sgs_3685": -58.0567}, {"data": "2016-10-01", "trimestre": "2016-T4", "sgs_3684": 326.2974, "sgs_7941": 222.3441, "sgs_21554": 548.6415, "sgs_22160": 127.199, "sgs_25563": 675.841, "sgs_3685": -67.4134}, {"data": "2017-01-01", "trimestre": "2017-T1", "sgs_3684": 319.216, "sgs_7941": 233.2577, "sgs_21554": 552.4737, "sgs_22160": 126.568, "sgs_25563": 679.041, "sgs_3685": -72.2907}, {"data": "2017-04-01", "trimestre": "2017-T2", "sgs_3684": 314.8579, "sgs_7941": 229.8656, "sgs_21554": 544.7235, "sgs_22160": 122.254, "sgs_25563": 666.977, "sgs_3685": -78.3731}, {"data": "2017-07-01", "trimestre": "2017-T3", "sgs_3684": 315.377, "sgs_7941": 234.8355, "sgs_21554": 550.2125, "sgs_22160": 127.553, "sgs_25563": 677.766, "sgs_3685": -77.0572}, {"data": "2017-10-01", "trimestre": "2017-T4", "sgs_3684": 314.7192, "sgs_7941": 227.8414, "sgs_21554": 542.5606, "sgs_22160": 121.956, "sgs_25563": 664.517, "sgs_3685": -78.7899}, {"data": "2018-01-01", "trimestre": "2018-T1", "sgs_3684": 319.5513, "sgs_7941": 242.1781, "sgs_21554": 561.7295, "sgs_22160": 123.043, "sgs_25563": 684.773, "sgs_3685": -75.011}, {"data": "2018-04-01", "trimestre": "2018-T2", "sgs_3684": 321.331, "sgs_7941": 236.6472, "sgs_21554": 557.9782, "sgs_22160": 111.19, "sgs_25563": 669.168, "sgs_3685": -96.5889}, {"data": "2018-07-01", "trimestre": "2018-T3", "sgs_3684": 307.4035, "sgs_7941": 231.1668, "sgs_21554": 538.5703, "sgs_22160": 104.657, "sgs_25563": 643.228, "sgs_3685": -88.2238}, {"data": "2018-10-01", "trimestre": "2018-T4", "sgs_3684": 320.6121, "sgs_7941": 238.6048, "sgs_21554": 559.2169, "sgs_22160": 106.56, "sgs_25563": 665.777, "sgs_3685": -67.3673}, {"data": "2019-01-01", "trimestre": "2019-T1", "sgs_3684": 326.3752, "sgs_7941": 238.0143, "sgs_21554": 564.3896, "sgs_22160": 116.289, "sgs_25563": 680.678, "sgs_3685": -74.8204}, {"data": "2019-04-01", "trimestre": "2019-T2", "sgs_3684": 322.894, "sgs_7941": 253.6862, "sgs_21554": 576.5802, "sgs_22160": 120.821, "sgs_25563": 697.401, "sgs_3685": -82.4075}, {"data": "2019-07-01", "trimestre": "2019-T3", "sgs_3684": 325.6514, "sgs_7941": 240.2256, "sgs_21554": 565.877, "sgs_22160": 107.008, "sgs_25563": 672.885, "sgs_3685": -68.4311}, {"data": "2019-10-01", "trimestre": "2019-T4", "sgs_3684": 322.9855, "sgs_7941": 250.6619, "sgs_21554": 573.6474, "sgs_22160": 102.141, "sgs_25563": 675.789, "sgs_3685": -49.5142}, {"data": "2020-01-01", "trimestre": "2020-T1", "sgs_3684": 326.0927, "sgs_7941": 240.7162, "sgs_21554": 566.8088, "sgs_22160": 73.013, "sgs_25563": 639.821, "sgs_3685": -35.8921}, {"data": "2020-04-01", "trimestre": "2020-T2", "sgs_3684": 307.0556, "sgs_7941": 245.9529, "sgs_21554": 553.0085, "sgs_22160": 66.407, "sgs_25563": 619.416, "sgs_3685": -60.476}, {"data": "2020-07-01", "trimestre": "2020-T3", "sgs_3684": 308.249, "sgs_7941": 244.1311, "sgs_21554": 552.3801, "sgs_22160": 69.181, "sgs_25563": 621.561, "sgs_3685": -65.1524}, {"data": "2020-10-01", "trimestre": "2020-T4", "sgs_3684": 310.8073, "sgs_7941": 244.0957, "sgs_21554": 554.903, "sgs_22160": 84.405, "sgs_25563": 639.308, "sgs_3685": -61.5532}, {"data": "2021-01-01", "trimestre": "2021-T1", "sgs_3684": 298.4939, "sgs_7941": 249.8949, "sgs_21554": 548.3888, "sgs_22160": 82.361, "sgs_25563": 630.75, "sgs_3685": -65.394}, {"data": "2021-04-01", "trimestre": "2021-T2", "sgs_3684": 302.3454, "sgs_7941": 250.2654, "sgs_21554": 552.6107, "sgs_22160": 98.562, "sgs_25563": 651.172, "sgs_3685": -70.9428}, {"data": "2021-07-01", "trimestre": "2021-T3", "sgs_3684": 321.2844, "sgs_7941": 245.7176, "sgs_21554": 567.002, "sgs_22160": 95.138, "sgs_25563": 662.14, "sgs_3685": -66.9589}, {"data": "2021-10-01", "trimestre": "2021-T4", "sgs_3684": 325.4399, "sgs_7941": 242.1072, "sgs_21554": 567.5471, "sgs_22160": 102.739, "sgs_25563": 670.286, "sgs_3685": -50.9656}, {"data": "2022-01-01", "trimestre": "2022-T1", "sgs_3684": 328.9951, "sgs_7941": 246.4293, "sgs_21554": 575.4244, "sgs_22160": 106.906, "sgs_25563": 682.33, "sgs_3685": -41.9581}, {"data": "2022-04-01", "trimestre": "2022-T2", "sgs_3684": 323.2279, "sgs_7941": 241.814, "sgs_21554": 565.0419, "sgs_22160": 96.022, "sgs_25563": 661.064, "sgs_3685": -38.4913}, {"data": "2022-07-01", "trimestre": "2022-T3", "sgs_3684": 318.8993, "sgs_7941": 249.4616, "sgs_21554": 568.3608, "sgs_22160": 93.702, "sgs_25563": 662.063, "sgs_3685": -27.092}, {"data": "2022-10-01", "trimestre": "2022-T4", "sgs_3684": 319.6343, "sgs_7941": 256.8096, "sgs_21554": 576.4439, "sgs_22160": 102.969, "sgs_25563": 679.413, "sgs_3685": -27.483}, {"data": "2023-01-01", "trimestre": "2023-T1", "sgs_3684": 321.3422, "sgs_7941": 266.2917, "sgs_21554": 587.634, "sgs_22160": 109.853, "sgs_25563": 697.486, "sgs_3685": -39.9868}, {"data": "2023-04-01", "trimestre": "2023-T2", "sgs_3684": 332.3117, "sgs_7941": 264.1784, "sgs_21554": 596.4901, "sgs_22160": 119.748, "sgs_25563": 716.238, "sgs_3685": -36.5167}, {"data": "2023-07-01", "trimestre": "2023-T3", "sgs_3684": 330.379, "sgs_7941": 269.0481, "sgs_21554": 599.4272, "sgs_22160": 116.812, "sgs_25563": 716.239, "sgs_3685": -32.1898}, {"data": "2023-10-01", "trimestre": "2023-T4", "sgs_3684": 342.1473, "sgs_7941": 265.0184, "sgs_21554": 607.1657, "sgs_22160": 124.377, "sgs_25563": 731.543, "sgs_3685": -34.806}, {"data": "2024-01-01", "trimestre": "2024-T1", "sgs_3684": 353.6612, "sgs_7941": 266.142, "sgs_21554": 619.8032, "sgs_22160": 129.003, "sgs_25563": 748.807, "sgs_3685": -29.8799}, {"data": "2024-04-01", "trimestre": "2024-T2", "sgs_3684": 359.5889, "sgs_7941": 260.1104, "sgs_21554": 619.6993, "sgs_22160": 120.505, "sgs_25563": 740.204, "sgs_3685": -28.8639}, {"data": "2024-07-01", "trimestre": "2024-T3", "sgs_3684": 375.3893, "sgs_7941": 265.3089, "sgs_21554": 640.6982, "sgs_22160": 125.887, "sgs_25563": 766.585, "sgs_3685": -27.0137}, {"data": "2024-10-01", "trimestre": "2024-T4", "sgs_3684": 346.6188, "sgs_7941": 256.402, "sgs_21554": 603.0208, "sgs_22160": 114.925, "sgs_25563": 717.946, "sgs_3685": -13.51}, {"data": "2025-01-01", "trimestre": "2025-T1", "sgs_3684": 362.0992, "sgs_7941": 263.9312, "sgs_21554": 626.0304, "sgs_22160": 119.747, "sgs_25563": 745.777, "sgs_3685": -2.8622}, {"data": "2025-04-01", "trimestre": "2025-T2", "sgs_3684": 363.1628, "sgs_7941": 266.2821, "sgs_21554": 629.4449, "sgs_22160": 137.467, "sgs_25563": 766.912, "sgs_3685": -14.6236}, {"data": "2025-07-01", "trimestre": "2025-T3", "sgs_3684": 378.9708, "sgs_7941": 273.8194, "sgs_21554": 652.7902, "sgs_22160": 151.428, "sgs_25563": 804.218, "sgs_3685": -18.9394}, {"data": "2025-10-01", "trimestre": "2025-T4", "sgs_3684": 386.1479, "sgs_7941": 274.3239, "sgs_21554": 660.4719, "sgs_22160": 159.074, "sgs_25563": 819.546, "sgs_3685": -8.7016}, {"data": "2026-01-01", "trimestre": "2026-T1", "sgs_3684": 401.1867, "sgs_7941": 281.5696, "sgs_21554": 682.7563, "sgs_22160": 172.891, "sgs_25563": 855.647, "sgs_3685": -1.1003}, {"data": "2026-04-01", "trimestre": "2026-T2", "sgs_3684": 407.1028, "sgs_7941": 287.0068, "sgs_21554": 694.1096, "sgs_22160": 175.412, "sgs_25563": 869.522, "sgs_3685": 5.0835}], "series": [{"coluna": "sgs_3684", "codigo": "3684", "curto": "DEB", "nome": "Dívida Externa Bruta", "unidade": "US$ bilhões", "ordem": 1}, {"coluna": "sgs_7941", "codigo": "7941", "curto": "Intercompanhia", "nome": "Operações Intercompanhia - Total", "unidade": "US$ bilhões", "ordem": 2}, {"coluna": "sgs_21554", "codigo": "21554", "curto": "DEB + intercompanhia", "nome": "Dívida Externa Bruta – inclusive operações intercompanhia", "unidade": "US$ bilhões", "ordem": 3}, {"coluna": "sgs_22160", "codigo": "22160", "curto": "Títulos domésticos", "nome": "Títulos de dívida negociados no mercado doméstico", "unidade": "US$ bilhões", "ordem": 4}, {"coluna": "sgs_25563", "codigo": "25563", "curto": "Conceito amplo", "nome": "Dívida Externa Bruta – inclusive operações intercompanhia e títulos de dívida negociados no mercado doméstico", "unidade": "US$ bilhões", "ordem": 5}, {"coluna": "sgs_3685", "codigo": "3685", "curto": "Dívida líquida", "nome": "Dívida Externa Líquida", "unidade": "US$ bilhões", "ordem": 6}]}, PADRAO = {"inicio": "2016-T2", "fim": "", "series": ["sgs_3684", "sgs_7941", "sgs_21554", "sgs_22160", "sgs_25563", "sgs_3685"], "escala": "nivel"}, subs = [];
+  let params = { ...PADRAO };
+  const roda = () => subs.forEach((f) => f());
+  addEventListener('resize', () => { clearTimeout(window.__t); window.__t = setTimeout(roda, 150); });
+  return {
+    data: (id) => ({ status: 'ok', data: D[id], columns: Object.keys(D[id][0] || {}), meta: [] }),
+    onData: (fn) => { subs.push(fn); fn(); },
+    params: () => ({ ...params }),
+    setParams: (p) => { Object.assign(params, p); roda(); },
+    resetParams: () => { params = { ...PADRAO }; roda(); },
+    colors: ["#2f6db5", "#e07b39", "#3a9a6e", "#c0508f", "#7a5cc7", "#c23b3b"],
+    setLink: () => {}, refresh: () => {},
+  };
+})();
+</script>
+</head>
+<body>
+<style>
+  .dx { font-family: var(--font-anthropic-sans); color: var(--color-fg); display: grid; gap: var(--cds-gap-lg); max-width: 72rem; margin-inline: auto; }
+  .dx-head h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; text-wrap: balance; }
+  .dx-take { margin: var(--cds-gap-xs) 0 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-body); max-width: 60rem; }
+  .dx-take b { font-weight: 600; color: var(--color-fg); font-variant-numeric: tabular-nums; }
+  .dx-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); min-width: 0; }
+  .dx-card h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0; }
+  .dx-note { margin: var(--cds-gap-xs) 0 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  .dx-controls { display: grid; gap: var(--cds-gap-md); }
+  .dx-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cds-gap-sm); }
+  .dx-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); text-transform: uppercase; letter-spacing: .04em; min-width: 4.5rem; }
+  .dx select, .dx button { font: inherit; font-size: var(--cds-font-size-caption); color: var(--color-fg); background: var(--color-bg); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-xs) var(--cds-pad-sm); cursor: pointer; }
+  .dx button:hover, .dx select:hover { border-color: var(--color-fg-muted); }
+  .dx button:focus-visible, .dx select:focus-visible, .dx-chip input:focus-visible + span { outline: 2px solid var(--color-fg); outline-offset: 2px; }
+  .dx button[aria-pressed="true"] { background: var(--color-fg); color: var(--color-bg); border-color: var(--color-fg); }
+  .dx-sep { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  .dx-chip { display: inline-flex; align-items: center; cursor: pointer; }
+  .dx-chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .dx-chip span { display: inline-flex; align-items: center; gap: var(--cds-gap-xs); font-size: var(--cds-font-size-caption); border: 1px solid var(--color-border-line); border-radius: 999px; padding: var(--cds-pad-xs) var(--cds-pad-sm); color: var(--color-fg-muted); background: var(--color-bg); }
+  .dx-chip input:checked + span { color: var(--color-fg); border-color: var(--color-fg-muted); }
+  .dx-chip i { width: .7rem; height: .7rem; border-radius: 50%; border: 2px solid currentColor; box-sizing: border-box; }
+  .dx-chip input:checked + span i { border-color: transparent; }
+  .dx-chip small { color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+  .dx-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); gap: var(--cds-gap-md); }
+  .dx-tile { display: grid; gap: var(--cds-gap-xs); align-content: start; background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-md); border-top: 3px solid var(--sw); }
+  .dx-tile-name { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .dx-tile-val { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .dx-tile-sub { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+  .dx-up { color: var(--color-bad); } .dx-down { color: var(--color-ok); }
+  .dx-chartbox { position: relative; min-height: 22rem; margin-top: var(--cds-gap-md); }
+  .dx-chartbox svg { display: block; overflow: visible; }
+  .dx-chartbox text { font-family: var(--font-anthropic-sans); font-size: 11px; fill: var(--color-fg-muted); }
+  .dx-tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; white-space: nowrap; z-index: 2; }
+  .dx-tip .dx-tip-h { color: var(--cds-text-secondary); margin-bottom: 2px; }
+  .dx-tip div { display: flex; align-items: center; gap: 6px; }
+  .dx-tip i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .dx-tip b { margin-left: auto; padding-left: 12px; font-weight: 600; }
+  .dx-empty { display: flex; align-items: center; justify-content: center; min-height: 22rem; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  .dx-tablebox { max-height: 26rem; overflow: auto; margin-top: var(--cds-gap-md); }
+  .dx table { border-collapse: collapse; width: 100%; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+  .dx th, .dx td { padding: var(--cds-pad-xs) var(--cds-pad-sm); text-align: right; border-bottom: 1px solid var(--color-border-line); white-space: nowrap; }
+  .dx th { position: sticky; top: 0; background: var(--color-panel); font-weight: var(--cds-font-weight-medium); color: var(--color-fg-muted); }
+  .dx th:first-child, .dx td:first-child { text-align: left; }
+  .dx-foot { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: 0; }
+  @media (max-width: 560px) { .dx-chartbox, .dx-empty { min-height: 16.5rem; } }
+  [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+  [data-dash-source-state=empty] { color: transparent; }
+</style>
+
+<div class="dx">
+  <header class="dx-head" id="topo">
+    <h1>Dívida externa do Brasil</h1>
+    <p class="dx-take dx-skeleton" id="dx-take" data-source="serie">—</p>
+  </header>
+
+  <section class="dx-card dx-controls" id="filtros" aria-label="Filtros">
+    <div class="dx-row">
+      <span class="dx-label">Janela</span>
+      <select id="dx-ini" aria-label="Trimestre inicial" data-source="serie"></select>
+      <span class="dx-sep">até</span>
+      <select id="dx-fim" aria-label="Trimestre final" data-source="serie"></select>
+      <span class="dx-sep">·</span>
+      <button type="button" data-anos="5">5 anos</button>
+      <button type="button" data-anos="10">10 anos</button>
+      <button type="button" data-anos="20">20 anos</button>
+      <button type="button" data-anos="0">Série completa</button>
+    </div>
+    <div class="dx-row">
+      <span class="dx-label">Séries</span>
+      <div class="dx-row" id="dx-series" data-source="series"></div>
+      <button type="button" id="dx-todas">Todas</button>
+      <button type="button" id="dx-limpar">Nenhuma</button>
+    </div>
+    <div class="dx-row">
+      <span class="dx-label">Escala</span>
+      <button type="button" id="dx-nivel" aria-pressed="true">US$ bilhões</button>
+      <button type="button" id="dx-indice" aria-pressed="false">Índice (início da janela = 100)</button>
+      <span class="dx-sep">·</span>
+      <button type="button" id="dx-reset">Restaurar padrão</button>
+    </div>
+  </section>
+
+  <section class="dx-tiles" id="dx-tiles" aria-label="Valores no fim da janela"></section>
+
+  <section class="dx-card" id="grafico">
+    <h2 id="dx-chart-title">Estoques trimestrais</h2>
+    <p class="dx-note" id="dx-chart-note">US$ bilhões, fim de trimestre.</p>
+    <div class="dx-chartbox dx-skeleton" id="dx-chart" data-source="serie series"></div>
+  </section>
+
+  <section class="dx-card" id="tabela">
+    <h2>Valores na janela</h2>
+    <p class="dx-note">US$ bilhões, do trimestre mais recente para o mais antigo. Célula vazia: o BCB não publica a série naquele trimestre.</p>
+    <div class="dx-tablebox">
+      <table id="dx-table" data-source="serie" data-row-key="trimestre"><thead><tr></tr></thead><tbody></tbody></table>
+    </div>
+  </section>
+
+  <p class="dx-foot">Fonte: Banco Central do Brasil, SGS (séries 3684, 3685, 7941, 21554, 22160 e 25563), estoques de fim de trimestre convertidos de US$ milhões para US$ bilhões. Identidades: 21554 = 3684 + 7941 e 25563 = 21554 + 22160. Dívida líquida negativa significa país credor líquido. Antes de cerca de 1990 várias séries só têm o 4º trimestre de cada ano.</p>
+</div>
+
+<script>
+(() => {
+  const nf = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const pf = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1, signDisplay: 'always' });
+  const num = (x) => (x === '' || x == null || Number.isNaN(Number(x)) ? null : Number(x));
+  const $ = (s) => document.querySelector(s);
+  const el = (tag, attrs = {}, text) => { const e = document.createElement(tag); for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v); if (text != null) e.textContent = text; return e; };
+  const SVG = 'http://www.w3.org/2000/svg';
+  const sv = (tag, attrs = {}) => { const e = document.createElementNS(SVG, tag); for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v); return e; };
+  const TODAS = ['sgs_3684', 'sgs_7941', 'sgs_21554', 'sgs_22160', 'sgs_25563', 'sgs_3685'];
+  const PADRAO = { inicio: '2016-T2', fim: '', series: TODAS, escala: 'nivel' };
+
+  const P = () => ({ ...PADRAO, ...Object.fromEntries(Object.entries(dash.params()).filter(([, v]) => v != null)) });
+  const set = (p) => dash.setParams(p);
+
+  // ---------- controles ----------
+  $('#dx-ini').addEventListener('change', (e) => set({ inicio: e.target.value }));
+  $('#dx-fim').addEventListener('change', (e) => set({ fim: e.target.value }));
+  document.querySelectorAll('[data-anos]').forEach((b) => b.addEventListener('click', () => {
+    const rows = dash.data('serie').data || [];
+    if (!rows.length) return;
+    const anos = Number(b.dataset.anos);
+    const p = P();
+    const fimIdx = p.fim ? rows.findIndex((r) => r.trimestre === p.fim) : rows.length - 1;
+    const fimR = rows[fimIdx < 0 ? rows.length - 1 : fimIdx];
+    if (!anos) return set({ inicio: rows[0].trimestre });
+    const [a, t] = fimR.trimestre.split('-T').map(Number);
+    const alvo = `${a - anos}-T${t}`;
+    const r = rows.find((x) => x.trimestre >= alvo) || rows[0];
+    set({ inicio: r.trimestre });
+  }));
+  $('#dx-todas').addEventListener('click', () => set({ series: TODAS }));
+  $('#dx-limpar').addEventListener('click', () => set({ series: [] }));
+  $('#dx-nivel').addEventListener('click', () => set({ escala: 'nivel' }));
+  $('#dx-indice').addEventListener('click', () => set({ escala: 'indice' }));
+  $('#dx-reset').addEventListener('click', () => { dash.resetParams(); set(PADRAO); });
+  $('#dx-series').addEventListener('change', (e) => {
+    const marcadas = [...document.querySelectorAll('#dx-series input:checked')].map((i) => i.value);
+    set({ series: TODAS.filter((c) => marcadas.includes(c)) });
+  });
+
+  // ---------- desenho ----------
+  let ultimoW = 0;
+  dash.onData(() => {
+    const S = dash.data('serie');
+    const M = dash.data('series');
+    const ok = S.status === 'ok' && M.status === 'ok';
+    document.querySelectorAll('.dx-skeleton').forEach((e) => { if (ok || S.status === 'error' || M.status === 'error') e.classList.remove('dx-skeleton'); });
+    if (!ok) {
+      const falhou = S.status === 'error' || M.status === 'error';
+      if (falhou) $('#dx-chart').replaceChildren(el('div', { class: 'dx-empty' }, 'Falha ao carregar'));
+      return;
+    }
+    const rows = S.data.map((r) => ({ ...r, _d: new Date(r.data + 'T00:00:00Z') }));
+    const meta = M.data.map((m, i) => ({ ...m, cor: dash.colors[i % dash.colors.length] }));
+    const metaDe = Object.fromEntries(meta.map((m) => [m.coluna, m]));
+    const p = P();
+    const tris = rows.map((r) => r.trimestre);
+    let iIni = tris.indexOf(p.inicio); if (iIni < 0) iIni = Math.max(0, tris.findIndex((t) => t >= p.inicio));
+    let iFim = p.fim ? tris.indexOf(p.fim) : rows.length - 1; if (iFim < 0) iFim = rows.length - 1;
+    if (iIni > iFim) [iIni, iFim] = [iFim, iIni];
+    const jan = rows.slice(iIni, iFim + 1);
+    const sel = TODAS.filter((c) => (p.series || []).includes(c));
+    const ini = jan[0].trimestre, fim = jan[jan.length - 1].trimestre;
+
+    // selects
+    for (const [id, val] of [['#dx-ini', ini], ['#dx-fim', fim]]) {
+      const s = $(id);
+      if (s.options.length !== tris.length) s.replaceChildren(...tris.slice().reverse().map((t) => new Option(t, t)));
+      s.value = val;
+    }
+    // presets realçados quando batem com a janela
+    document.querySelectorAll('[data-anos]').forEach((b) => {
+      const anos = Number(b.dataset.anos);
+      let alvo = rows[0].trimestre;
+      if (anos) { const [a, t] = fim.split('-T').map(Number); alvo = (rows.find((x) => x.trimestre >= `${a - anos}-T${t}`) || rows[0]).trimestre; }
+      b.setAttribute('aria-pressed', String(alvo === ini));
+    });
+    $('#dx-nivel').setAttribute('aria-pressed', String(p.escala !== 'indice'));
+    $('#dx-indice').setAttribute('aria-pressed', String(p.escala === 'indice'));
+
+    // chips
+    const box = $('#dx-series');
+    box.replaceChildren(...meta.map((m) => {
+      const lab = el('label', { class: 'dx-chip', title: m.nome });
+      const inp = el('input', { type: 'checkbox', value: m.coluna, id: 'dx-chk-' + m.codigo });
+      inp.checked = sel.includes(m.coluna);
+      const span = el('span');
+      const sw = el('i'); sw.style.color = m.cor; if (inp.checked) sw.style.background = m.cor;
+      span.append(sw, document.createTextNode(m.curto + ' '), el('small', {}, m.codigo));
+      lab.append(inp, span);
+      return lab;
+    }));
+
+    // primeiro e último valor não nulo de cada série na janela
+    const ponta = (c) => {
+      const v = jan.filter((r) => num(r[c]) != null);
+      return v.length ? { a: v[0], b: v[v.length - 1] } : null;
+    };
+
+    // frase-resumo
+    const take = $('#dx-take');
+    const foco = ['sgs_25563', 'sgs_21554', 'sgs_3684', ...TODAS].find((c) => sel.includes(c) && ponta(c));
+    take.replaceChildren();
+    if (!foco) {
+      take.textContent = sel.length ? `Nenhuma das séries escolhidas tem dados entre ${ini} e ${fim}.` : 'Escolha ao menos uma série nos filtros abaixo.';
+    } else {
+      const { a, b } = ponta(foco);
+      const va = num(a[foco]), vb = num(b[foco]);
+      const mk = (r, txt) => el('b', { 'data-source': 'serie', 'data-field': foco, 'data-where': 'trimestre=' + r.trimestre }, txt);
+      take.append(
+        document.createTextNode(`${metaDe[foco].curto} (${metaDe[foco].codigo}): de US$ `), mk(a, nf.format(va)),
+        document.createTextNode(` bi em ${a.trimestre} para US$ `), mk(b, nf.format(vb)),
+        document.createTextNode(` bi em ${b.trimestre}` + (va > 0 ? ` (${pf.format((vb / va - 1) * 100)}%).` : '.')),
+      );
+      if (sel.includes('sgs_3685') && ponta('sgs_3685')) {
+        const l = ponta('sgs_3685').b, v = num(l.sgs_3685);
+        take.append(document.createTextNode(` Dívida líquida em ${l.trimestre}: US$ `),
+          el('b', { 'data-source': 'serie', 'data-field': 'sgs_3685', 'data-where': 'trimestre=' + l.trimestre }, nf.format(v)),
+          document.createTextNode(v < 0 ? ' bi (país credor líquido).' : ' bi (país devedor líquido).'));
+      }
+    }
+
+    // cartões
+    $('#dx-tiles').replaceChildren(...sel.map((c) => {
+      const m = metaDe[c], pt = ponta(c);
+      const t = el('article', { class: 'dx-tile', id: 'cartao-' + m.codigo, title: m.nome });
+      t.style.setProperty('--sw', m.cor);
+      t.append(el('div', { class: 'dx-tile-name' }, `${m.curto} · ${m.codigo}`));
+      if (!pt) { t.append(el('div', { class: 'dx-tile-sub' }, 'Sem dados na janela')); return t; }
+      const va = num(pt.a[c]), vb = num(pt.b[c]);
+      t.append(el('div', { class: 'dx-tile-val', 'data-source': 'serie', 'data-field': c, 'data-where': 'trimestre=' + pt.b.trimestre }, nf.format(vb)));
+      t.append(el('div', { class: 'dx-tile-sub' }, `US$ bi em ${pt.b.trimestre}`));
+      const sub = el('div', { class: 'dx-tile-sub' });
+      sub.append(document.createTextNode(`${pt.a.trimestre}: `), el('span', { 'data-source': 'serie', 'data-field': c, 'data-where': 'trimestre=' + pt.a.trimestre }, nf.format(va)));
+      const dif = vb - va;
+      const ch = el('span', { class: dif > 0 ? 'dx-up' : dif < 0 ? 'dx-down' : '' },
+        `  ${dif >= 0 ? '▲' : '▼'} ${pf.format(dif)}` + (va > 0 ? ` (${pf.format((vb / va - 1) * 100)}%)` : ''));
+      sub.append(ch);
+      t.append(sub);
+      return t;
+    }));
+
+    desenha(jan, sel, metaDe, p.escala === 'indice');
+    tabela(jan, sel, metaDe);
+  });
+
+  function niceTicks(lo, hi, n) {
+    const span = hi - lo || Math.abs(hi) || 1;
+    const raw = span / n, mag = Math.pow(10, Math.floor(Math.log10(raw)));
+    const step = [1, 2, 2.5, 5, 10].map((k) => k * mag).find((s) => span / s <= n) || 10 * mag;
+    const a = Math.floor(lo / step) * step, b = Math.ceil(hi / step) * step;
+    const out = []; for (let v = a; v <= b + step / 2; v += step) out.push(+v.toFixed(10));
+    return out;
+  }
+
+  function desenha(jan, sel, metaDe, indice) {
+    const box = $('#dx-chart');
+    const W = Math.max(280, box.clientWidth || 600);
+    const H = W < 520 ? 260 : 360;
+    $('#dx-chart-title').textContent = indice ? 'Evolução relativa' : 'Estoques trimestrais';
+    let excl = [];
+    const series = sel.map((c) => {
+      const pts = jan.filter((r) => num(r[c]) != null).map((r) => ({ d: r._d, t: r.trimestre, v: num(r[c]) }));
+      if (indice && pts.length) {
+        const base = pts[0].v;
+        if (!(base > 0)) { excl.push(metaDe[c].curto); return null; }
+        pts.forEach((q) => { q.raw = q.v; q.v = (q.v / base) * 100; });
+      }
+      return pts.length ? { c, m: metaDe[c], pts } : null;
+    }).filter(Boolean);
+    $('#dx-chart-note').textContent = indice
+      ? 'Índice: primeiro trimestre com dado na janela = 100.' + (excl.length ? ` ${excl.join(', ')} fica de fora porque começa a janela com valor negativo ou zero.` : '')
+      : 'US$ bilhões, fim de trimestre. Passe o cursor para ver os valores.' + (sel.includes('sgs_3685') ? ' Dívida líquida = dívida bruta menos reservas internacionais e demais ativos externos; negativa significa que os ativos superam a dívida (país credor líquido).' : '');
+    if (!series.length) {
+      box.replaceChildren(el('div', { class: 'dx-empty' }, sel.length ? 'Sem dados para as séries escolhidas nesta janela.' : 'Nenhuma série escolhida.'));
+      return;
+    }
+    const all = series.flatMap((s) => s.pts.map((q) => q.v));
+    let lo = Math.min(...all), hi = Math.max(...all);
+    if (!indice && lo > 0) lo = 0;
+    const yt = niceTicks(lo, hi, H < 300 ? 4 : 6);
+    const y0 = yt[0], y1 = yt[yt.length - 1];
+    const fmtY = (v) => new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 }).format(v);
+
+    const svg = sv('svg', { width: '100%', height: H, viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': 'Gráfico de linhas das séries escolhidas' });
+    box.replaceChildren(svg);
+    // margem esquerda medida
+    const probe = sv('text'); svg.append(probe);
+    let ml = 0; for (const v of yt) { probe.textContent = fmtY(v); ml = Math.max(ml, probe.getComputedTextLength()); }
+    let mr = 0; for (const s of series) { probe.textContent = s.m.curto + ' 000,0'; mr = Math.max(mr, probe.getComputedTextLength()); }
+    probe.remove();
+    const mL = Math.ceil(ml) + 10, mT = 10, mB = 26;
+    const mR = W < 520 ? 12 : Math.min(Math.ceil(mr) + 14, W * 0.3);
+    const x0 = jan[0]._d.getTime(), x1 = jan[jan.length - 1]._d.getTime();
+    const X = (d) => mL + (x1 === x0 ? (W - mL - mR) / 2 : ((d.getTime() - x0) / (x1 - x0)) * (W - mL - mR));
+    const Y = (v) => mT + (1 - (v - y0) / (y1 - y0 || 1)) * (H - mT - mB);
+
+    for (const v of yt) {
+      svg.append(sv('line', { x1: mL, x2: W - mR, y1: Y(v), y2: Y(v), stroke: v === 0 || (indice && v === 100) ? 'var(--cds-chart-reference)' : 'var(--cds-chart-grid)', 'stroke-width': 1, 'stroke-dasharray': indice && v === 100 ? '4 3' : null }));
+      const tx = sv('text', { x: mL - 8, y: Y(v), 'text-anchor': 'end', 'dominant-baseline': 'middle' }); tx.textContent = fmtY(v); svg.append(tx);
+    }
+    // eixo x: anos
+    const a0 = jan[0]._d.getUTCFullYear(), a1 = jan[jan.length - 1]._d.getUTCFullYear();
+    const maxLab = Math.max(2, Math.floor((W - mL - mR) / 46));
+    const passo = [1, 2, 5, 10, 20].find((k) => (a1 - a0) / k + 1 <= maxLab) || 20;
+    for (let a = Math.ceil(a0 / passo) * passo; a <= a1; a += passo) {
+      const d = new Date(Date.UTC(a, 0, 1));
+      if (d.getTime() < x0 || d.getTime() > x1) continue;
+      svg.append(sv('line', { x1: X(d), x2: X(d), y1: H - mB, y2: H - mB + 4, stroke: 'var(--cds-chart-axis)' }));
+      const tx = sv('text', { x: X(d), y: H - mB + 16, 'text-anchor': 'middle' }); tx.textContent = a; svg.append(tx);
+    }
+    if (a1 === a0 || jan.length < 5) {
+      const tx = sv('text', { x: (mL + W - mR) / 2, y: H - mB + 16, 'text-anchor': 'middle' }); tx.textContent = `${jan[0].trimestre} a ${jan[jan.length - 1].trimestre}`; svg.append(tx);
+    }
+    svg.append(sv('line', { x1: mL, x2: W - mR, y1: H - mB, y2: H - mB, stroke: 'var(--cds-chart-axis)' }));
+    // dívida líquida: o que significa estar acima ou abaixo de zero
+    if (!indice && sel.includes('sgs_3685') && y0 < 0 && y1 > 0) {
+      const z = Y(0);
+      for (const [txt, dy] of [['▲ acima de 0: país devedor líquido', -6], ['▼ abaixo de 0: país credor líquido', 13]]) {
+        const tx = sv('text', { x: mL + 6, y: z + dy });
+        tx.style.fill = metaDe.sgs_3685.cor; tx.textContent = 'Dívida líquida ' + txt; svg.append(tx);
+      }
+    }
+
+    // linhas
+    for (const s of series) {
+      const d = s.pts.map((q, i) => `${i ? 'L' : 'M'}${X(q.d).toFixed(1)},${Y(q.v).toFixed(1)}`).join('');
+      svg.append(sv('path', { d, fill: 'none', stroke: s.m.cor, 'stroke-width': 2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }));
+      if (s.pts.length === 1 || s.pts.length < 30) for (const q of s.pts) svg.append(sv('circle', { cx: X(q.d), cy: Y(q.v), r: 2.5, fill: s.m.cor }));
+    }
+    // rótulos no fim (telas largas), afastados para não se sobreporem
+    if (W >= 520) {
+      const labs = series.map((s) => { const q = s.pts[s.pts.length - 1]; return { s, q, y: Y(q.v) }; }).sort((a, b) => a.y - b.y);
+      for (let i = 1; i < labs.length; i++) if (labs[i].y - labs[i - 1].y < 13) labs[i].y = labs[i - 1].y + 13;
+      const excesso = labs.length ? labs[labs.length - 1].y - (H - mB) : 0;
+      if (excesso > 0) labs.forEach((l) => { l.y -= excesso; });
+      for (const l of labs) {
+        const tx = sv('text', { x: X(l.q.d) + 6, y: l.y, 'dominant-baseline': 'middle' });
+        tx.style.fill = l.s.m.cor;
+        tx.textContent = `${l.s.m.curto} ${indice ? nf.format(l.q.v) : nf.format(l.q.v)}`;
+        svg.append(tx);
+      }
+    }
+
+    // dica ao passar o cursor
+    const regua = sv('line', { y1: mT, y2: H - mB, stroke: 'var(--cds-chart-reference)', 'stroke-width': 1, visibility: 'hidden' });
+    svg.append(regua);
+    const dots = series.map((s) => { const c = sv('circle', { r: 4, fill: s.m.cor, stroke: 'var(--color-panel)', 'stroke-width': 1.5, visibility: 'hidden' }); svg.append(c); return c; });
+    const tip = el('div', { class: 'dx-tip', hidden: '' }); box.append(tip);
+    const capa = sv('rect', { x: mL, y: mT, width: Math.max(1, W - mL - mR), height: H - mT - mB, fill: 'transparent' }); svg.append(capa);
+    const esconde = () => { tip.hidden = true; regua.setAttribute('visibility', 'hidden'); dots.forEach((d) => d.setAttribute('visibility', 'hidden')); };
+    const mostra = (ev) => {
+      const r = svg.getBoundingClientRect();
+      const px = ((ev.clientX - r.left) / r.width) * W;
+      let best = jan[0], bd = Infinity;
+      for (const row of jan) { const dd = Math.abs(X(row._d) - px); if (dd < bd) { bd = dd; best = row; } }
+      const xx = X(best._d);
+      regua.setAttribute('x1', xx); regua.setAttribute('x2', xx); regua.setAttribute('visibility', 'visible');
+      tip.replaceChildren(el('div', { class: 'dx-tip-h' }, best.trimestre));
+      series.forEach((s, i) => {
+        const q = s.pts.find((k) => k.t === best.trimestre);
+        if (!q) { dots[i].setAttribute('visibility', 'hidden'); return; }
+        dots[i].setAttribute('cx', xx); dots[i].setAttribute('cy', Y(q.v)); dots[i].setAttribute('visibility', 'visible');
+        const linha = el('div'); const sw = el('i'); sw.style.background = s.m.cor;
+        linha.append(sw, document.createTextNode(s.m.curto), el('b', {}, indice ? `${nf.format(q.v)} (US$ ${nf.format(q.raw)} bi)` : nf.format(q.v)));
+        tip.append(linha);
+      });
+      tip.hidden = false;
+      const bw = box.clientWidth, tw = tip.offsetWidth, sx = (xx / W) * r.width;
+      tip.style.left = Math.max(0, Math.min(bw - tw, sx + 12 + tw > bw ? sx - tw - 12 : sx + 12)) + 'px';
+      tip.style.top = '8px';
+    };
+    capa.addEventListener('pointermove', mostra);
+    capa.addEventListener('pointerdown', mostra);
+    capa.addEventListener('pointerleave', esconde);
+  }
+
+  function tabela(jan, sel, metaDe) {
+    const tr = $('#dx-table thead tr');
+    const th0 = el('th', { 'data-field': 'trimestre', scope: 'col' }, 'Trimestre');
+    tr.replaceChildren(th0, ...sel.map((c) => { const h = el('th', { 'data-field': c, scope: 'col', title: metaDe[c].nome }, `${metaDe[c].curto} (${metaDe[c].codigo})`); return h; }));
+    const corpo = jan.slice().reverse().filter((r) => sel.some((c) => num(r[c]) != null));
+    $('#dx-table tbody').replaceChildren(...corpo.map((r) => {
+      const linha = el('tr');
+      linha.append(el('td', {}, r.trimestre), ...sel.map((c) => el('td', {}, num(r[c]) == null ? '' : nf.format(num(r[c])))));
+      return linha;
+    }));
+  }
+})();
+</script>
+
+</body>
+</html>
